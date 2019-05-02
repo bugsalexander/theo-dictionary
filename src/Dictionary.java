@@ -8,10 +8,12 @@ public class Dictionary implements DictionaryInterface {
     private class Node {
         private String key;
         private String value;
+        Node next;
 
         Node(String key, String value) {
             this.key = key;
             this.value = value;
+            this.next = null;
         }
     }
 
@@ -27,17 +29,37 @@ public class Dictionary implements DictionaryInterface {
 
     // returns if the Dictionary is empty
     public boolean isEmpty() {
-        return false;
+        return this.numItems == 0;
     }
 
-    @Override
+    // returns the size of the Dictionary
     public int size() {
-        return 0;
+        return this.numItems;
     }
 
-    @Override
+    // grabs the corresponding value of a given key
     public String lookup(String key) {
-        return null;
+        // if we are empty, return null
+        if (this.head == null) {
+            return null;
+        }
+        // otherwise, search for stuff
+        else {
+            // searching for the key.
+            Node current = this.head;
+            while (current != null) {
+                // if we find key, return the value
+                if (current.key.equals(key)) {
+                    return current.value;
+                }
+                // otherwise, check the next node.
+                else {
+                    current = current.next;
+                }
+            }
+            // key not found, so return null.
+            return null;
+        }
     }
 
     @Override
