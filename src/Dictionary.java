@@ -15,6 +15,10 @@ public class Dictionary implements DictionaryInterface {
             this.value = value;
             this.next = null;
         }
+
+        public String toString() {
+            return "" + this.key + " " + this.value + "\n";
+        }
     }
 
     // fields for the Dictionary
@@ -73,6 +77,7 @@ public class Dictionary implements DictionaryInterface {
         Node toAdd = new Node(key, value);
         toAdd.next = this.head;
         this.head = toAdd;
+        this.numItems += 1;
     }
 
     // deletes a key-value pair.
@@ -82,6 +87,7 @@ public class Dictionary implements DictionaryInterface {
             // check if the key is in the first node.
             if (this.head.key.equals(key)) {
                 this.head = this.head.next;
+                this.numItems -= 1;
             }
             // otherwise use current-previous to change pointers to skip current.
             else {
@@ -93,6 +99,8 @@ public class Dictionary implements DictionaryInterface {
                     if (current.key.equals(key)) {
                         // point previous.next to current.next, skipping current
                         previous.next = current.next;
+                        // decrement the size;
+                        this.numItems -= 1;
                         return;
 
                     }
@@ -111,8 +119,23 @@ public class Dictionary implements DictionaryInterface {
         }
     }
 
-    @Override
+    // resets this Dictionary to empty.
     public void makeEmpty() {
+        this.head = null;
+        this.numItems = 0;
+    }
 
+    // returns string output of the Dictionary's list of pairs
+    public String toString() {
+        String returnThis = "";
+        // things are added to the front of the list.
+        // we want output order to be oldest in front.
+        Node current = this.head;
+        while (current != null) {
+            returnThis = current.toString() + returnThis;
+            current = current.next;
+        }
+
+        return returnThis;
     }
 }
