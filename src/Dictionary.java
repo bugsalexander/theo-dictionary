@@ -39,37 +39,76 @@ public class Dictionary implements DictionaryInterface {
 
     // grabs the corresponding value of a given key
     public String lookup(String key) {
-        // if we are empty, return null
-        if (this.head == null) {
-            return null;
+        // searching for the key.
+        Node current = this.head;
+        while (current != null) {
+            // if we find key, return the value
+            if (current.key.equals(key)) {
+                return current.value;
+            }
+            // otherwise, check the next node.
+            else {
+                current = current.next;
+            }
         }
-        // otherwise, search for stuff
-        else {
-            // searching for the key.
-            Node current = this.head;
-            while (current != null) {
-                // if we find key, return the value
-                if (current.key.equals(key)) {
-                    return current.value;
-                }
-                // otherwise, check the next node.
-                else {
-                    current = current.next;
+        // key not found, so return null.
+        return null;
+    }
+
+    // adds a key-value pair.
+    public void insert(String key, String value) {
+        // check to make sure we don't already have a given key.
+        Node current = this.head;
+        while (current != null) {
+            if (current.key.equals(key)) {
+                // TODO: throw new ALready Exists exception or whatever.
+                return;
+            }
+            else {
+                current = current.next;
+            }
+        }
+
+        // adds the new thing at the front of the list, because order doesn't matter.
+        Node toAdd = new Node(key, value);
+        toAdd.next = this.head;
+        this.head = toAdd;
+    }
+
+    // deletes a key-value pair.
+    public void delete(String key) {
+        // if we contain the provided key, delete it.
+        if (this.lookup(key) != null) {
+            // check if the key is in the first node.
+            if (this.head.key.equals(key)) {
+                this.head = this.head.next;
+            }
+            // otherwise use current-previous to change pointers to skip current.
+            else {
+                Node previous = this.head;
+                Node current = this.head.next;
+
+                while (current != null) {
+                    // if we find key, remove it, and return.
+                    if (current.key.equals(key)) {
+                        // point previous.next to current.next, skipping current
+                        previous.next = current.next;
+                        return;
+
+                    }
+                    // else set current to next. and previous. continue searching.
+                    else {
+                        previous = current;
+                        current = current.next;
+                    }
                 }
             }
-            // key not found, so return null.
-            return null;
         }
-    }
-
-    @Override
-    public void insert(String key, String value) {
-
-    }
-
-    @Override
-    public void delete(String key) {
-
+        // otherwise throw a new exception. (not found?)
+        else {
+            // TODO: throw a not-found exception.
+            return;
+        }
     }
 
     @Override
